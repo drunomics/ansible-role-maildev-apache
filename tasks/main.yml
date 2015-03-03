@@ -1,0 +1,22 @@
+---
+
+- name: Install packages.
+  apt: pkg=libapache2-mod-proxy-html state=present
+
+- name: Enable proxy_http module
+  command: a2enmod proxy_http creates=/etc/apache2/mods-enabled/proxy_http.load
+  notify: restart apache
+
+- name: Enable proxy_html module
+  command: a2enmod proxy_html creates=/etc/apache2/mods-enabled/proxy_html.load
+  notify: restart apache
+
+- name: Add mailcatcher site configuration file.
+  template: >
+    src=site-proxy-maildev.j2 dest=/etc/apache2/sites-available/proxy-maildev{{ apache_site_file_suffix }} mode=644
+  notify: restart apache
+
+- name: Enable the maildev proxy.
+  command: >
+    a2ensite proxy-maildev creates=/etc/apache2/sites-enabled/proxy-maildev{{ apache_site_file_suffix }}
+  notify: restart apache

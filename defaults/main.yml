@@ -1,0 +1,2 @@
+---
+maildev_fqdn: devel-mail.{{ ansible_fqdn }}

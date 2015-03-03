@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName {{ maildev_fqdn }}
+    ProxyPass / http://127.0.0.1:1080/
+    ProxyPassReverse / http://127.0.0.1:1080/
+
+  {% if apache_htpasswd_file %}
+  <Location />
+    AuthType Basic
+    AuthName "Restricted access"
+    AuthUserFile /etc/apache2/htpasswd/{{ apache_htpasswd_file }}
+    require valid-user
+    </Location>
+  {% endif %}
+</VirtualHost>

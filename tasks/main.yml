@@ -1,7 +1,7 @@
 ---
 
 - name: Install packages.
-  apt: pkg=libapache2-mod-proxy-html state=present
+  apt: pkg=libapache2-mod-proxy-html state=present update_cache=yes cache_valid_time=86400
 
 - name: Enable proxy_http module
   command: a2enmod proxy_http creates=/etc/apache2/mods-enabled/proxy_http.load

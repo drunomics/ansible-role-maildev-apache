@@ -1,5 +1,6 @@
 <VirtualHost *:80>
-    ServerName {{ maildev_fqdn }}
+    ServerName devel-mail
+    ServerAlias devel-mail*
     ProxyPass / http://127.0.0.1:1080/
     ProxyPassReverse / http://127.0.0.1:1080/
 

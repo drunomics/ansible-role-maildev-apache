@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost *:{{ apache_listen_port }}>
     ServerName devel-mail
     ServerAlias devel-mail*
     ProxyPass / http://127.0.0.1:1080/

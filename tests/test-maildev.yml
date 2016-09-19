@@ -1,0 +1,26 @@
+# The playbook requires a running container, see run-container.yml.
+---
+- hosts: all:&{{ limit_groups | default('container') }}
+  become: true
+
+  roles:
+    - self
+
+  post_tasks:
+  - name: Install test prerequesites
+    apt: name=curl state=present
+    tags: assert
+
+  - name: Test if maildev is accessable
+    shell: >
+      curl -u maildev:maildev --header 'Host: devel-mail.example.com' http://{{ ansible_default_ipv4.address }}/
+    register: result
+    failed_when: result.stdout.find('MailDev') == -1
+    tags: assert
+
+  - name: Test if access is protected
+    shell: >
+      curl --header 'Host: devel-mail.example.com' -s -o /dev/null -w "%{http_code}" http://{{ ansible_default_ipv4.address }}/
+    register: result
+    failed_when: result.stdout != "401"
+    tags: assert

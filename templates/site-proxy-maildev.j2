@@ -1,15 +1,24 @@
-<VirtualHost *:{{ apache_listen_port }}>
-    ServerName devel-mail
-    ServerAlias devel-mail*
-    ProxyPass / http://127.0.0.1:1080/
-    ProxyPassReverse / http://127.0.0.1:1080/
+<VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port }}>
+  ServerName devel-mail
+  ServerAlias devel-mail* devel-mail_
+  ProxyPass / http://127.0.0.1:1080/
+  ProxyPassReverse / http://127.0.0.1:1080/
 
-  {% if apache_htpasswd_file %}
+  {% if apache_maildev_htpasswd_enable %}
   <Location />
     AuthType Basic
     AuthName "Restricted access"
-    AuthUserFile /etc/apache2/htpasswd/{{ apache_htpasswd_file }}
+    AuthUserFile /etc/apache2/htpasswd/maildev
     require valid-user
+
+    Satisfy any
+    Order deny,allow
+    Deny from all
+    # Allow password-less access from some IP addresses.
+  {% for item in apache_maildev_htpasswd_bypass_from %}
+    Allow from {{ item }}
+  {% endfor %}
     </Location>
   {% endif %}
+
 </VirtualHost>

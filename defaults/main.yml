@@ -1,2 +1,9 @@
 ---
-maildev_fqdn: devel-mail.{{ ansible_fqdn }}
+apache_maildev_enable_site: true
+apache_maildev_subdomain: "devel-mail"
+apache_maildev_htpasswd_enable: true
+apache_maildev_htpasswd_bypass_from: []
+
+# Insecure default maildev/maildev: Change it!
+apache_maildev_htpasswd_file:
+  - "maildev:$apr1$04QW4GlY$fgRZXJyWf83/.PnBOIuZ2/"

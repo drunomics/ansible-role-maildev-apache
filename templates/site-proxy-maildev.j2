@@ -1,6 +1,6 @@
 <VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port }}>
-  ServerName devel-mail
-  ServerAlias devel-mail* devel-mail_
+  ServerName {{ apache_maildev_subdomain }}
+  ServerAlias {{ apache_maildev_subdomain }}.* {{ apache_maildev_subdomain }}_*
   ProxyPass / http://127.0.0.1:1080/
   ProxyPassReverse / http://127.0.0.1:1080/
 

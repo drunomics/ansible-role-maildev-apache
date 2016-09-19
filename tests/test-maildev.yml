@@ -13,7 +13,7 @@
 
   - name: Test if maildev is accessable
     shell: >
-      curl -u maildev:maildev --header 'Host: devel-mail.example.com' http://{{ ansible_default_ipv4.address }}/
+      curl -u admin:admin --header 'Host: devel-mail.example.com' http://{{ ansible_default_ipv4.address }}/
     register: result
     failed_when: result.stdout.find('MailDev') == -1
     tags: assert

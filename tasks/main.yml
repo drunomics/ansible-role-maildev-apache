@@ -31,14 +31,11 @@
 - name: Enable the maildev site.
   command: >
     a2ensite maildev creates=/etc/apache2/sites-enabled/maildev{{ apache_site_file_suffix }}
-  notify: restart apache
   when: apache_maildev_enable_site
   notify: restart apache
 
 - name: Disable the maildev site.
   command: >
     a2ensite maildev creates=/etc/apache2/sites-enabled/maildev{{ apache_site_file_suffix }}
-  notify: restart apache
   when: not apache_maildev_enable_site
   notify: restart apache
-

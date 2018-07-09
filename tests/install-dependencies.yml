@@ -11,17 +11,17 @@
       become: true
       tags: docker-py
 
+    - name: Install ansible role dependencies
+      shell: >
+        ansible-galaxy install {{ item.role }}
+        creates=roles/{{ item.role }}
+      with_items: "{{ role_meta.dependencies }}"
+      when: role_meta.dependencies is defined
+      tags: dependencies
+
     - name: Install dependencies from requirements.yml
       shell: >
         [ ! -f ../meta/requirements.yml ] || ansible-galaxy install -r ../meta/requirements.yml
       register: result
       changed_when: "'was installed successfully' in result.stdout"
-      tags: dependencies
-
-    - name: Install ansible role dependencies
-      shell: >
-        ansible-galaxy install {{ item.role }}
-        creates=roles/{{ item.role }}
-      with_items: role_meta.dependencies
-      when: role_meta.dependencies is defined
       tags: dependencies
